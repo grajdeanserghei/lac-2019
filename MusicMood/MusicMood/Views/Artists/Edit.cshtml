@@ -1,12 +1,12 @@
 ﻿@model ArtistViewModel
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
-<h2>Create</h2>
-
+<h2>Edit</h2>
 <div>
-    <form asp-action="Create" method="post">
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="Id" />
         <div class="form-group">
             <label asp-for="Name"></label>
             <input asp-for="Name" class="form-control" />
@@ -19,7 +19,7 @@
             <label asp-for="MusicGenre"></label>
             <input asp-for="MusicGenre" class="form-control" />
         </div>
-        <button type="submit" class="btn btn-primary">Create</button>
+        <button type="submit" class="btn btn-primary">Save</button>
         <a asp-action="Index" class="btn btn-default">Cancel</a>
     </form>
 </div>

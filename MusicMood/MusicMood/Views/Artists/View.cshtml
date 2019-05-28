@@ -1,0 +1,16 @@
+﻿@model ArtistViewModel
+@{
+    ViewData["Title"] = "View";
+}
+
+<h2>@Model.Name</h2>
+<h3>@Model.Country</h3>
+<h4>@Model.MusicGenre</h4>
+<div>
+    <form asp-action="Delete" method="post">
+        <a asp-action="Index" class="btn btn-default">Grid</a>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-success">Edit</a>
+        <input name="id" value="@Model.Id" type="hidden" />
+        <input type="submit" value="Delete" class="btn btn-danger" />
+    </form>
+</div>
