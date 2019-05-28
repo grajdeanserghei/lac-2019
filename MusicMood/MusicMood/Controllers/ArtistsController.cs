@@ -3,33 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MusicMood.Core.Models;
+using MusicMood.Infrastructure;
 using MusicMood.Models;
 
 namespace MusicMood.Controllers
 {
     public class ArtistsController : Controller
     {
-        private static List<ArtistViewModel> _artists = new List<ArtistViewModel>
+        private MusicMoodContext _context;
+
+        public ArtistsController(MusicMoodContext context)
         {
-            new ArtistViewModel
-            {
-                Id = 0,
-                Name = "Metalica",
-                Country = "USA",
-                MusicGenre = "Rock"
-            },
-            new ArtistViewModel
-            {
-                Id = 1,
-                Name = "Beatles",
-                Country = "UK",
-                MusicGenre = "Heavy metal",
-            },
-        };
+            _context = context;
+        }
 
         public IActionResult Index()
         {
-            return View(_artists);
+            var artists = _context.Artists.Select(ToViewModel).ToList();
+            return View(artists);
         }
 
         [HttpGet]
@@ -41,47 +33,67 @@ namespace MusicMood.Controllers
         [HttpPost]
         public IActionResult Create(ArtistViewModel model)
         {
-            var id = 1;
-            if(_artists.Count > 0)
+            var artist = new ArtistModel
             {
-                id = _artists.Max(x => x.Id) + 1;
-            }
-            model.Id = id;
-            _artists.Add(model);
+                Name = model.Name,
+                MusicGenre = model.MusicGenre,
+                Country = model.Country
+            };
+            _context.Add(artist);
+            _context.SaveChanges();
+
             return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
         public IActionResult View(int id)
         {
-            var artist = _artists.FirstOrDefault(x => x.Id == id);
-            return View(artist);
+            var artist = _context.Artists.Find(id);
+            var model = ToViewModel(artist);
+            return View(model);
         }
 
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            var artist = _artists.First(x => x.Id == id);
-            _artists.Remove(artist);
+            var artist = _context.Artists.Find(id);
+            _context.Artists.Remove(artist);
+            _context.SaveChanges();
+
             return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var artist = _artists.FirstOrDefault(x => x.Id == id);
-            return View(artist);
+            var artist = _context.Artists.Find(id);
+            var model = ToViewModel(artist);
+            return View(model);
         }
 
         [HttpPost]
         public IActionResult Edit(ArtistViewModel model)
         {
-            var artist = _artists.FirstOrDefault(x => x.Id == model.Id);
+            var artist = _context.Artists.Find(model.Id);
             artist.Name = model.Name;
             artist.Country = model.Country;
             artist.MusicGenre = model.MusicGenre;
-            
+            _context.SaveChanges();
+
             return RedirectToAction(nameof(Index));
+        }
+
+        private ArtistViewModel ToViewModel(ArtistModel model)
+        {
+            var viewModel = new ArtistViewModel
+            {
+                Id = model.Id,
+                Country = model.Country,
+                MusicGenre = model.MusicGenre,
+                Name = model.Name,
+            };
+
+            return viewModel;
         }
     }
 }
