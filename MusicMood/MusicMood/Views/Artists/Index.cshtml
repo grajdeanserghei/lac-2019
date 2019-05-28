@@ -7,11 +7,12 @@
 <h2>Index</h2>
 
 <div>
-    <table class="table">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Name</th>
                 <th>Country</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -20,10 +21,11 @@
             <tr>
                 <td>@artist.Name</td>
                 <td>@artist.Country</td>
+                <td><a asp-action="View" asp-route-id="@artist.Id" class="btn btn-default">View</a></td>
             </tr>
             }
         </tbody>
     </table>
-    
+    <a asp-action="Create" class="btn btn-primary">Create</a>
     
 </div>

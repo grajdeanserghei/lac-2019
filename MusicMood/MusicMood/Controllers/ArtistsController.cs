@@ -19,7 +19,7 @@ namespace MusicMood.Controllers
             },
             new ArtistViewModel
             {
-                Id = 0,
+                Id = 1,
                 Name = "Beatles",
                 Country = "UK",
             },
@@ -28,6 +28,21 @@ namespace MusicMood.Controllers
         public IActionResult Index()
         {
             return View(_artists);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(ArtistViewModel model)
+        {
+            var id = _artists.Max(x => x.Id) + 1;
+            model.Id = id;
+            _artists.Add(model);
+            return RedirectToAction(nameof(Index));
         }
 
     }

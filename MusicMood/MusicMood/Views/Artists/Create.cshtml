@@ -1,0 +1,21 @@
+﻿@model ArtistViewModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<div>
+    <form asp-action="Create" method="post">
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Country"></label>
+            <input asp-for="Country" class="form-control" />
+        </div>
+        <button type="submit" value="Create" class="btn btn-primary" >Create</button>
+    </form>
+</div>
+
